@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        
-    </body>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h3>Typing</h3>
+        <label for="language">Text Language</label>
+        <select name="language" id="language">
+
+        </select><br>
+        <label for="length">Text Length</label>
+        <input type="number" name="length" id="length" value="20"><br>
+        <div class="text" id="text"></div>
+        <input class="btn" type="button" id="reset_run" value="RESET RUN">
+        <input class="btn" type="button" id="new_text" value="Generate new Text"><br>
+
+        <h4>Statistics</h4>
+        <span class="subheading">Last set</span> <br>
+        <span class="subheading">Today</span><br>
+        <span class="subheading">Total</span><br>
+
+        <h4>Data Management</h4>
+        <input class="btn" type="button" value="DELETE TODAYS DATA">
+        <input class="btn" type="button" value="DELETE ALL DATA">
+    </div>
+</body>
+
 </html>

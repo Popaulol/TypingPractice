@@ -1,0 +1,46 @@
+body {
+    background-color: #2b2b2b;
+    color: #808080;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    text-align: center;
+}
+
+.text {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid dimgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    font-size: 30px;
+    padding: 5px;
+}
+
+.btn {
+    margin: 1px;
+    border-radius: 5px;
+    /* background-color: gray; */
+}
+
+.current {
+    background-color: #808080;
+    color: #2b2b2b;
+}
+
+.correct {
+    color: green;
+}
+
+.wrong {
+    color: red;
+    background-color: #8b2b2b;
+}
+
+.subheading {
+    text-decoration: underline;
+
+}
