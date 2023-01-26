@@ -23,13 +23,39 @@
         <input class="btn" type="button" id="new_text" value="Generate new Text"><br>
 
         <h4>Statistics</h4>
-        <span class="subheading">Last set</span> <br>
-        <span class="subheading">Today</span><br>
-        <span class="subheading">Total</span><br>
+        <div id="stats">
+            <span class="subheading">Last run</span><br>
+            <span>Time: <span id="last_run_time">No Data Loaded yet</span> CPM: <span id="last_run_cpm">No Data Loaded
+                    yet</span> Wrong chars: <span id="last_run_wrong_chars">No Data
+                    Loaded yet</span></span><br>
+            <span class="subheading">Today</span><br>
+            <span>
+                runs: <span id="today_run_count">No Data Loaded yet</span>
+                Chars Typed: <span id="today_chars_typed">No Data Loaded yet</span>
+                Time: <span id="today_time">No Data Loaded yet</span>
+                CPM: <span id="today_cpm">No Data Loaded yet</span>
+                Mistake Ratio: <span id="today_wrong_chars">No Data Loaded yet</span>
+            </span><br>
+            <span class="subheading">Total</span><br>
+            <span>
+                runs: <span id="total_run_count">No Data Loaded yet</span>
+                Chars Typed: <span id="total_chars_typed">No Data Loaded yet</span>
+                Time: <span id="total_time">No Data Loaded yet</span>
+                CPM: <span id="total_cpm">No Data Loaded yet</span>
+                Mistake Ratio: <span id="total_wrong_chars">No Data Loaded yet</span>
+            </span><br>
+            <input type="button" value="Detailed Report" id="report">
+        </div>
+        <div class="invisible" id="no_stats">No Data available</div>
 
         <h4>Data Management</h4>
-        <input class="btn" type="button" value="DELETE TODAYS DATA">
-        <input class="btn" type="button" value="DELETE ALL DATA">
+        <input class="btn" id="save_button" type="button" value="Save Data to File" accept=".json"><br>
+        <label for="load_data">Upload Save: </label>
+        <input type="file" name="load_data" id="load_data"><br>
+        <!-- <span style="color: red">&ShortUpArrow;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ShortUpArrow;</span><br>
+        <sup style="color: red">These are only tested on firefox and may not work in other Browsers!</sup><br> -->
+        <input class="btn" id="delete_today" type="button" value="DELETE TODAYS DATA">
+        <input class="btn" id="delete_everything" type="button" value="DELETE ALL DATA">
     </div>
 </body>
 
