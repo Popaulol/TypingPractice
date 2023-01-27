@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let stat_div = document.getElementById("stats")
     let no_stats = document.getElementById("no_stats")
     let report_button = document.getElementById("report")
+    let report_table = document.getElementById("detailed_report")
 
     // Functions
 
@@ -85,20 +86,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (length == 1 && content[0].length == 1) content.push(content[0])
                 content.forEach(
                     (word) => {
-                        for (const c of word) {
+                        for (let c of word) {
+                            // Any Keys not found as a single key on a keyboard result in softlocks, so we just replace any we know about with alternatives
+                            if (c == "~") c = "-"
+                            else if (c == "è") c = "e"
+                            else if (c == "é") c = "e"
                             let span = document.createElement("span");
                             span.innerText = c
                             text_area.appendChild(span)
-                            text.push(span)
+                            text.push({ span: span, char: c })
 
                         }
                         let span = document.createElement("span");
-                        span.innerText = " "
+                        span.innerHTML = "&nbsp;&ZeroWidthSpace;"
                         text_area.appendChild(span)
-                        text.push(span)
+                        text.push({ span: span, char: " " })
                     }
                 )
-                text[0].classList.add("current")
+                text[0].span.classList.add("current")
                 document.removeEventListener("keydown", continue_practice)
                 document.addEventListener("keydown", start_practice)
 
@@ -113,12 +118,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const key = e.key;
         if (key.length != 1) return // We are dealing with a modifer Key
 
-        if (key != text[0].innerText) return
+        if (key != text[0].char) return
 
         current_character = 1
-        text[0].classList.remove("current")
-        text[0].classList.add("correct")
-        text[1].classList.add("current")
+        text[0].span.classList.remove("current")
+        text[0].span.classList.add("correct")
+        text[1].span.classList.add("current")
         start_time = (new Date()).getTime()
         last_char_time = (new Date()).getTime()
         current_mistake = false
@@ -129,21 +134,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const reset_run = () => {
-        for (char of text) {
-            char.classList.remove("correct")
-            char.classList.remove("wrong")
-            char.classList.remove("current")
+        for (span of text) {
+            span.span.classList.remove("correct")
+            span.span.classList.remove("wrong")
+            span.span.classList.remove("current")
         }
 
-        text[0].classList.remove("current")
+        text[0].span.classList.add("current")
 
         current_character = 0
         current_mistake = false
 
         current_run_data = []
 
-        document.removeEventListener("keydown", start_practice)
-        document.addEventListener("keydown", continue_practice)
+        document.addEventListener("keydown", start_practice)
+        document.removeEventListener("keydown", continue_practice)
     }
 
 
@@ -153,13 +158,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log(key)
         if (key.length != 1) return // We are dealing with a modifer Key
         e.preventDefault()
-        if (key == text[current_character].innerText) {
+        if (key == text[current_character].char) {
 
-            text[current_character].classList.remove("current")
+            text[current_character].span.classList.remove("current")
 
             if (current_mistake)
-                text[current_character].classList.add("wrong")
-            else text[current_character].classList.add("correct")
+                text[current_character].span.classList.add("wrong")
+            else text[current_character].span.classList.add("correct")
 
             if (current_character + 1 == text.length - 1) {
                 let runs = JSON.parse(localStorage.getItem("runs"));
@@ -180,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return
             }
 
-            text[current_character + 1].classList.add("current")
+            text[current_character + 1].span.classList.add("current")
 
             current_run_data.push(
                 {
@@ -295,6 +300,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const runs = JSON.parse(localStorage.getItem("runs"));
         let char_map = {}
 
+        let tablebody = document.createElement("tbody")
+
         for (run of runs) {
             for (char of run.data) {
                 if (char_map[char.char])
@@ -307,10 +314,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         const keys = Object.keys(char_map)
         keys.sort()
 
-        let report = ""
-
         for (key of keys) {
-            report += `\`${key}\`: `
+            let row = document.createElement("tr")
+
+            const create_cell = (text) => {
+                let cell = document.createElement("td")
+                let cell_text = document.createTextNode(text)
+                cell.appendChild(cell_text)
+                row.appendChild(cell)
+
+                return text
+            }
+
+            create_cell(`\`${key}\`: `)
             let chars = char_map[key]
             let total_time = 0
             let mistakes = 0
@@ -320,10 +336,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             const error_rate = mistakes / chars.length * 100
             const average_time = total_time / chars.length
-            report += `Error Rate: ${round_to_places(error_rate, 2)}% `
-            report += `Average Time: ${round_to_places(average_time, 2)}ms\n`
+            create_cell(`${chars.length}`)
+            create_cell(`${mistakes}`)
+            create_cell(`${round_to_places(error_rate, 2)}%`)
+            create_cell(`${round_to_places(average_time, 2)}ms`)
+
+            tablebody.appendChild(row)
+
         }
-        alert(report)
+
+        report_table.removeChild(report_table.tBodies[0])
+        report_table.appendChild(tablebody)
+        // alert(report)
     }
 
     // Initial setup
@@ -389,10 +413,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
 
     delete_everything.addEventListener("click", () => {
+        window.close()
         localStorage.setItem("runs", "[]")
     })
 
     report_button.addEventListener("click", character_report)
 
-
+    character_report()
 })

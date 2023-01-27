@@ -48,3 +48,24 @@ body {
 .invisible {
     display: none;
 }
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid dimgray;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /*width: 80%;*/
+}
+
+th,
+td {
+    border: 1px solid dimgray;
+    padding: 5px;
+}
+
+.note {
+    color: dimgray;
+    font-size: xx-small;
+}

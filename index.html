@@ -43,8 +43,24 @@
                 Time: <span id="total_time">No Data Loaded yet</span>
                 CPM: <span id="total_cpm">No Data Loaded yet</span>
                 Mistake Ratio: <span id="total_wrong_chars">No Data Loaded yet</span>
-            </span><br>
-            <input type="button" value="Detailed Report" id="report">
+            </span><br><br><br>
+
+            <span class="subheading">Character Breakdown</span><br><br>
+            <input type="button" value="Refresh Character Breakdown Report" id="report"><br>
+            <span class="note">This report isn't updated automatically since it's
+                comutation takes enough resources to make the timing of the Typing practice inaccurate</span>
+            <table id="detailed_report">
+                <thead>
+                    <tr>
+                        <th>Character</th>
+                        <th>Occurences</th>
+                        <th>Mistakes</th>
+                        <th>Error Rate</th>
+                        <th>Average Time</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
         <div class="invisible" id="no_stats">No Data available</div>
 
